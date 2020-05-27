@@ -20,6 +20,9 @@ addons:
 git:
   depth: false
 
+script:
+  - ./build.sh pack
+
 deploy:
   - provider: script
     script: ./build.sh push --NugetApiKey $NUGET_API_KEY --configuration Release
