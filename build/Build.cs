@@ -19,11 +19,15 @@ class Build : NukeBuild
 	[Parameter] string NugetApiKey;
 
 	[Solution] readonly Solution Solution;
-	[GitRepository] readonly GitRepository GitRepository;
+	[GitRepository] static readonly GitRepository GitRepository;
 	[GitVersion] readonly GitVersion GitVersion;
 
 	[Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-	readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+	readonly Configuration Configuration = IsLocalBuild 
+		? Configuration.Debug
+		: GitRepository.Branch == "master" 
+			? Configuration.Release
+			: Configuration.Debug;
 
 	AbsolutePath SourceDirectory => RootDirectory / "src";
 
@@ -76,7 +80,7 @@ class Build : NukeBuild
 				.SetAuthors("sankovlex@gmail.com")
 				.SetPackageProjectUrl("https://github.com/Octogram/Octogram.Contracts")
 				.SetPackageLicenseUrl("https://github.com/Octogram/Octogram.Contracts/blob/master/LICENSE")
-				.SetVersion(GitVersion.NuGetVersionV2)
+				.SetVersion(GetPackageVersion())
 				.SetNoDependencies(true)
 				.SetOutputDirectory(PackageDirectory));
 		});
@@ -105,4 +109,9 @@ class Build : NukeBuild
 	/// - Microsoft VisualStudio     https://nuke.build/visualstudio
 	/// - Microsoft VSCode           https://nuke.build/vscode
 	public static int Main() => Execute<Build>(x => x.Compile);
+
+	string GetPackageVersion() =>
+		Configuration.Equals(Configuration.Release)
+			? GitVersion.NuGetVersionV2
+			: $"{GitVersion.NuGetVersionV2}.{GitVersion.BuildMetaData}";
 }
