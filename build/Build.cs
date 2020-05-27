@@ -76,7 +76,7 @@ class Build : NukeBuild
 				.SetAuthors("sankovlex@gmail.com")
 				.SetPackageProjectUrl("https://github.com/Octogram/Octogram.Contracts")
 				.SetPackageLicenseUrl("https://github.com/Octogram/Octogram.Contracts/blob/master/LICENSE")
-				.SetVersion(GetPackageVersion())
+				.SetVersion(GitVersion.NuGetVersionV2)
 				.SetNoDependencies(true)
 				.SetOutputDirectory(PackageDirectory));
 		});
@@ -105,9 +105,4 @@ class Build : NukeBuild
 	/// - Microsoft VisualStudio     https://nuke.build/visualstudio
 	/// - Microsoft VSCode           https://nuke.build/vscode
 	public static int Main() => Execute<Build>(x => x.Compile);
-
-	string GetPackageVersion() =>
-		Configuration.Equals(Configuration.Release)
-			? GitVersion.NuGetVersionV2
-			: $"{GitVersion.NuGetVersionV2}-unstable.{GitVersion.BuildMetaData}";
 }
