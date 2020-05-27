@@ -1,5 +1,6 @@
 using System.Linq;
 using Nuke.Common;
+using Nuke.Common.CI.TravisCI;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
@@ -19,13 +20,13 @@ class Build : NukeBuild
 	[Parameter] string NugetApiKey;
 
 	[Solution] readonly Solution Solution;
-	[GitRepository] static readonly GitRepository GitRepository;
+	[GitRepository] readonly GitRepository GitRepository;
 	[GitVersion] readonly GitVersion GitVersion;
 
 	[Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
 	readonly Configuration Configuration = IsLocalBuild 
 		? Configuration.Debug
-		: GitRepository.Branch == "master" 
+		: TravisCI.Instance.Branch == "master" 
 			? Configuration.Release
 			: Configuration.Debug;
 
@@ -111,7 +112,7 @@ class Build : NukeBuild
 	public static int Main() => Execute<Build>(x => x.Compile);
 
 	string GetPackageVersion() =>
-		Configuration.Equals(Configuration.Release)
+		Configuration.Equals(Configuration.Release) && TravisCI.Instance.Tag != null
 			? GitVersion.NuGetVersionV2
 			: $"{GitVersion.NuGetVersionV2}.{GitVersion.BuildMetaData}";
 }
