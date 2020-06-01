@@ -5,7 +5,7 @@ namespace Octogram.Contracts.Commands
 	/// <summary>
 	/// Command to read a message
 	/// </summary>
-	public interface IMessageReadCommand
+	public interface IMessageReadCommand : ICommand
 	{
 		/// <summary>
 		/// Returns message identity

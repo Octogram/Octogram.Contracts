@@ -5,7 +5,7 @@ namespace Octogram.Contracts.Events
 	/// <summary>
 	/// Event that rise when a message is sent
 	/// </summary>
-	public interface IMessageSentEvent
+	public interface IMessageSentEvent : IEvent
 	{
 		/// <summary>
 		/// Returns message identity

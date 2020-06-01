@@ -5,7 +5,7 @@ namespace Octogram.Contracts.Commands
 	/// <summary>
 	/// Command to send a message
 	/// </summary>
-	public interface IMessageSendCommand
+	public interface IMessageSendCommand : ICommand
 	{
 		/// <summary>
 		/// Returns message identifier

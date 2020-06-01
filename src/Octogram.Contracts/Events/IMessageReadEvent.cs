@@ -5,7 +5,7 @@ namespace Octogram.Contracts.Events
 	/// <summary>
 	/// Event that rise when a message is read
 	/// </summary>
-	public interface IMessageReadEvent
+	public interface IMessageReadEvent : IEvent
 	{
 		/// <summary>
 		/// Returns message identity
