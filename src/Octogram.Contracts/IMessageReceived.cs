@@ -2,12 +2,10 @@
 
 namespace Octogram.Contracts
 {
-	public interface IMessageRead
+	public interface IMessageReceived
 	{
 		public Guid ChatId { get; }
 
 		public Guid MessageId { get; }
-
-		public string Reader { get; }
 	}
 }
